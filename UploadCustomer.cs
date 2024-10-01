@@ -26,7 +26,9 @@ namespace ST10390916Function
             string email = req.Query["Email"];
 
             _logger.LogInformation("C# HTTP trigger function processed a request.");
-            TableClient tableClient = new TableClient("DefaultEndpointsProtocol=https;AccountName=st10390916storage;AccountKey=Q6z1hLCZQ/fOwujI8LODTtgJAqf9f3uDRL34MXsSSF6XHFO74qZjtJntWuE5xbgNYSVBPJkKAAMr+AStwFL5TQ==;EndpointSuffix=core.windows.net", "customers");
+            TableClient tableClient = new TableClient("DefaultEndpointsProtocol=https;AccountName=st10390916storage;" +
+                "AccountKey=Q6z1hLCZQ/fOwujI8LODTtgJAqf9f3uDRL34MXsSSF6XHFO74qZjtJntWuE5xbgNYSVBPJkKAAMr+AStwFL5TQ==;" +
+                "EndpointSuffix=core.windows.net", "customers");
             tableClient.AddEntityAsync(new TableEntity
             {
                 ["PartitionKey"] = partitionKey,

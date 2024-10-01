@@ -26,7 +26,9 @@ namespace ST10390916Function
             string productWeight = req.Query["productWeight"];
 
             _logger.LogInformation("C# HTTP trigger function processed a request.");
-            TableClient tableClient = new TableClient("DefaultEndpointsProtocol=https;AccountName=st10390916storage;AccountKey=Q6z1hLCZQ/fOwujI8LODTtgJAqf9f3uDRL34MXsSSF6XHFO74qZjtJntWuE5xbgNYSVBPJkKAAMr+AStwFL5TQ==;EndpointSuffix=core.windows.net", "products");
+            TableClient tableClient = new TableClient("DefaultEndpointsProtocol=https;AccountName=st10390916storage;" +
+                "AccountKey=Q6z1hLCZQ/fOwujI8LODTtgJAqf9f3uDRL34MXsSSF6XHFO74qZjtJntWuE5xbgNYSVBPJkKAAMr+AStwFL5TQ==;" +
+                "EndpointSuffix=core.windows.net", "products");
             tableClient.AddEntityAsync(new TableEntity
             {
                 ["PartitionKey"] = partitionKey,

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using ST10390916Function;
+using System.Data;
 
 namespace ST10390916Functions
 {
@@ -32,13 +33,17 @@ namespace ST10390916Functions
                 var connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
                 var shareServiceClient = new ShareServiceClient(connectionString);
                 var shareClient = shareServiceClient.GetShareClient(shareName);
-                //await shareClient.CreateIfNotExistsAsync();
+                await shareClient.CreateIfNotExistsAsync();
                 var directoryClient = shareClient.GetRootDirectoryClient();
                 var fileClient = directoryClient.GetFileClient(fileName);
 
-                using var stream = req.Body;
-                fileClient.CreateAsync(stream.Length);
-                fileClient.UploadAsync(stream);
+                using var stream = req.Form.Files[0].OpenReadStream();
+                if (stream == null || !stream.CanSeek || stream.Length == 0)
+                {
+                    return new BadRequestObjectResult("The stream is either null, non-seekable, or empty.");
+                }
+                await fileClient.CreateAsync(stream.Length);
+                await fileClient.UploadAsync(stream);
 
                 return new OkObjectResult("File uploaded to Azure Files");
             }
